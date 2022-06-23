@@ -1,0 +1,14 @@
+{
+  "name": "every_web3",
+  "version": "1.0.0",
+  "description": "A web3 jobs aggregator",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "puppeteer": "^15.0.0"
+  }
+}
