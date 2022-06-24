@@ -13,6 +13,7 @@ Website list:
 
 ## Todo
 
+- [ ] Push apply link to json array
 - [ ] Figure out a json data format for all websites
 - [ ] Add description and instructions for possible contributors
 - [ ] Search and filter support
