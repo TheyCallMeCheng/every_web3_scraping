@@ -33,7 +33,7 @@ async function start(url){
 
     console.log(tempArray[0].datePosted)
     
-    await fs.writeFile("names.json", JSON.stringify(tempArray));
+    await fs.writeFile("jobs.json", JSON.stringify(tempArray));
     browser.close();
 } 
 
