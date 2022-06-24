@@ -1,24 +1,32 @@
 const puppeteer = require("puppeteer");
-const fs = require("fs/promises")
+const fs = require("fs/promises");
 
 async function start(url){
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.goto(url);
 
-    const names = await page.evaluate(() => {
-        return Array.from(document.querySelectorAll("    body > main > div > div > div > div:nth-child(3) > table > tbody"))
-                   .map(x => x.textContent)
+
+    const table = await page.$$eval
+    ("body > main > div > div > div > div:nth-child(3) > table > tbody > tr + script", (text) => {
+        // .replace is needed to remove all of the extra spacings \n but keep one to separate the lines
+        return text.map(x => ("" +x.innerHTML).replace(/\n{2,}/gm, "\n"))
     })
 
-    const title = await page.$$eval("body > main > div > div > div > div:nth-child(3) > table > tbody", (text) => {
-        return text.map(x => x.textContent)
-    })
+    let tempArray = new Array();
+    console.log(table.entries())
 
+    table.forEach(row => {
+        //Just a test to check if I can access items in the object
+        //console.log(JSON.parse(row).datePosted + " NEW LINE ------------------- \n")
+        // I have to parse Each row to make sure the json is correctly formatted
+        tempArray.push(JSON.parse(row))
+    });
 
-    await fs.writeFile("names.txt", title.join("\r"));
-    console.log(title);
+    console.log(tempArray.length)
+    
+    await fs.writeFile("names.json", JSON.stringify(tempArray));
     browser.close();
-}
+} 
 
-start("https://web3.career/")
+start("https://web3.career/?page=1")
