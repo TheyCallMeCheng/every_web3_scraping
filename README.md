@@ -1,5 +1,5 @@
-## Every web3
-Everything web3 will be a website aggregates all of the web3 job listings in from different websites and alternative sources (telegram, discord, etc).
+## Everything web3
+Everything web3 will be a website that aggregates all of the web3 job listings from different websites and alternative sources such as telegram, discord, twitter, etc...
 
 This repo contains only the web scraping part.
 
