@@ -19,19 +19,30 @@ async function start(url){
         }
     )
 
-    console.log(applyLinks.length)
-
     let tempArray = new Array();
-    //console.log(table.entries())
 
     table.forEach(row => {
         //Just a test to check if I can access items in the object
         //console.log(JSON.parse(row).datePosted + " NEW LINE ------------------- \n")
         // I have to parse Each row to make sure the json is correctly formatted
-        tempArray.push(JSON.parse(row))
+        // Some strange errors might popup while parsing the json, we will just skip those lines
+        try{
+            applyLinks.forEach(element => {
+                tempArray.push(JSON.parse(row), element) 
+            });
+        }catch(error) {
+            console.log("Error while pushing to tempArray: " + error)
+        }
     });
 
     console.log(tempArray[0].datePosted)
+    //Delete unused data
+    tempArray.forEach(element => {
+        if(element.datePosted){
+            delete element["@context"]
+            delete element["@type"]
+        }
+    })
     
     await fs.writeFile("jobs.json", JSON.stringify(tempArray));
     browser.close();
