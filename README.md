@@ -13,8 +13,9 @@ Website list:
 
 ## Todo
 
-- [ ] Push apply link to json array
+- [X] Push apply link to json array
 - [ ] Figure out a json data format for all websites
+- [ ] Research and implement cloudflare captcha block
 - [ ] Add description and instructions for possible contributors
 - [ ] Search and filter support
 - [ ] Maybe check if job listings are duplicate

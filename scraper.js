@@ -1,7 +1,11 @@
 const puppeteer = require("puppeteer");
 const fs = require("fs/promises");
+const jsdom = require("jsdom");
+const { JSDOM } = jsdom;
 
-async function start(url){
+
+async function getWeb3Carrer(url){
+    
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.goto(url);
@@ -35,7 +39,6 @@ async function start(url){
         }
     });
 
-    console.log(tempArray[0].datePosted)
     //Delete unused data
     tempArray.forEach(element => {
         if(element.datePosted){
@@ -44,8 +47,39 @@ async function start(url){
         }
     })
     
-    await fs.writeFile("jobs.json", JSON.stringify(tempArray));
+    await fs.writeFile("web3Carrer.json", JSON.stringify(tempArray));
     browser.close();
 } 
 
-start("https://web3.career/?page=1")
+async function getRemote3(url){
+    const browser = await puppeteer.launch({slowMo: 1000, headless: true});
+    const page = await browser.newPage();
+    await page.goto(url);
+    await page.setViewport({
+        width: 1080,
+        height: 4000,
+      });
+
+    await page.screenshot({
+        path:"./screen.png",
+        fullPage: true,
+    })
+    
+    const table = await page.$$eval
+    ("#odindex > div.bubble-element.RepeatingGroup.bubble-rg > div.bubble-element.GroupItem", (text) => {
+        return text.map(x => (x.innerHTML))
+    })
+
+    // console.log(table[0].textContent)
+    
+    const dom = new JSDOM(table[0])
+    console.log(dom.window.document.querySelector(".bubble-element").textContentt)
+
+    await fs.writeFile("remote3.txt", table);
+    browser.close();
+    
+}
+
+
+//getWeb3Carrer("https://web3.career/?page=1")
+getRemote3("https://remote3.co/web3-jobs/")
