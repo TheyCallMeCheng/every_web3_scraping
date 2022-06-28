@@ -10,7 +10,7 @@ async function getWeb3Carrer(url){
     const page = await browser.newPage();
     await page.goto(url);
 
-    const table = await page.$$eval
+    const partialDataExtraction = await page.$$eval
     ("body > main > div > div > div > div:nth-child(3) > table > tbody > tr + script", (text) => {
         // .replace is needed to remove all of the extra spacings \n but keep one to separate the lines
         return text.map(x => ("" +x.innerHTML).replace(/\n{2,}/gm, "\n"))
@@ -25,12 +25,13 @@ async function getWeb3Carrer(url){
 
     let tempArray = new Array();
 
-    table.forEach(row => {
+    partialDataExtraction.forEach(row => {
         //Just a test to check if I can access items in the object
         //console.log(JSON.parse(row).datePosted + " NEW LINE ------------------- \n")
         // I have to parse Each row to make sure the json is correctly formatted
         // Some strange errors might popup while parsing the json, we will just skip those lines
         try{
+            //Instead of pushing to the array of objects you should use Object.assign to push directly to the object
             applyLinks.forEach(element => {
                 tempArray.push(JSON.parse(row), element) 
             });
@@ -64,18 +65,44 @@ async function getRemote3(url){
         path:"./screen.png",
         fullPage: true,
     })
+
+    const partialDataExtraction = await page.$$eval
+    ("#odindex > div.bubble-element.RepeatingGroup.bubble-rg > div.bubble-element.GroupItem.bubble-r-container.flex > div > div > div:nth-child(1) > div.bubble-element.Group.bubble-r-container.flex ", (text) => {
+        return text.map(x => //here
+            ({
+                Company: x.querySelector("div:nth-child(1)").textContent, 
+                Job_title: x.querySelector(".column > div a").textContent,
+                Location:  x.querySelector(".column > div:nth-child(3)").textContent,
+                //TimePosted: x.querySelector(".row > div > div > div:nth-child(2) > div.bubble-element.Text").textContent
+            }))
+    })
     
-    const table = await page.$$eval
-    ("#odindex > div.bubble-element.RepeatingGroup.bubble-rg > div.bubble-element.GroupItem", (text) => {
-        return text.map(x => (x.innerHTML))
+    // TODO: Change the "2 days ago" to actual time
+    const datesPosted = await page.$$eval(
+        "#odindex > div.bubble-element.RepeatingGroup.bubble-rg > div.bubble-element.GroupItem.bubble-r-container.flex.row > div > div > div:nth-child(2) > div.bubble-element.Text", (item) => {
+            return item.map(x => ({
+                TimePosted: x.textContent
+            }))
+        }
+    )
+
+    const jobLinks = await page.$$eval(
+        "#odindex > div.bubble-element.RepeatingGroup.bubble-rg > div.bubble-element.GroupItem.bubble-r-container.flex.row > div > div > div:nth-child(1) > div.bubble-element.Group.bubble-r-container.flex.column > a", (linkItem) => {
+            return linkItem.map(x => ({
+                applyLink: x.href
+            }))
+        }
+    )
+
+    var i = -1;
+    const completeJSON = partialDataExtraction.map(item => {
+        i++;
+        return Object.assign(item, datesPosted[i], jobLinks[i])
     })
 
-    // console.log(table[0].textContent)
-    
-    const dom = new JSDOM(table[0])
-    console.log(dom.window.document.querySelector(".bubble-element").textContentt)
+    console.log(completeJSON)
 
-    await fs.writeFile("remote3.txt", table);
+    await fs.writeFile("remote3.json", JSON.stringify(completeJSON));
     browser.close();
     
 }

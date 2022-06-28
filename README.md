@@ -14,6 +14,8 @@ Website list:
 ## Todo
 
 - [X] Push apply link to json array
+- [ ] Change variable names, make them more easily understandable
+- [ ] In remote3 section, change the date format from "18 hours ago" to actual unix timestamp
 - [ ] Figure out a json data format for all websites
 - [ ] Research and implement cloudflare captcha block
 - [ ] Add description and instructions for possible contributors
