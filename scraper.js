@@ -107,6 +107,39 @@ async function getRemote3(url){
     
 }
 
+async function getCryptocurrencyjobs(url) {
+    const browser = await puppeteer.launch({slowMo: 500, headless: true});
+    const page = await browser.newPage();
+    await page.goto(url);
+    await page.setViewport({
+        width: 1080,
+        height: 1920,
+      });
+    
+    const extractedDataArray = await page.$$eval(
+        "#hits > div > div > ol > li", (row) => {
+            return row.map(x => (
+                {
+                    Job_title: x.querySelector("h2").textContent,
+                    Company:  x.querySelector("h3") .textContent,
+                    Location: x.querySelector("li > h4 > a").textContent,
+                    Category: x.querySelector("div > h4 > a").textContent,
+                    // Can't seem to find the correct selector to get the contract type
+                    // Contract_Type: x.querySelector("li > h4 > a").textContent,
+                    // TimePosted: x.querySelector("div.inline-block.leading-loose.sm span").textContent
+        })
+        )
+        }
+    )
+"#hits > div > div > ol > li:nth-child(1) > div > div.col-start-3.row-start-1.flex.items-baseline.justify-end.self-center.sm\:self-auto > div.inline-block.leading-loose.sm\:mr-4 > span"
+"#hits > div > div > ol > li > div > div.col-start-1.sm\:col-start-2.col-end-2.sm\:col-end-4 > div > ul:nth-child(5) > li > h4 > a"
+"#hits > div > div > ol > li:nth-child(2) > div > div.col-start-1.sm\:col-start-2.col-end-2.sm\:col-end-4 > div > ul:nth-child(5) > li:nth-child(1) > h4 > a"
+"#hits > div > div > ol > li:nth-child(3) > div > div.col-start-1.sm\:col-start-2.col-end-2.sm\:col-end-4 > div > ul:nth-child(5) > li > h4 > a"
+"#hits > div > div > ol > li:nth-child(4) > div > div.col-start-1.sm\:col-start-2.col-end-2.sm\:col-end-4 > div > ul:nth-child(5) > li > h4 > a"
+    console.log(extractedDataArray);
+    browser.close()
+}
 
+getCryptocurrencyjobs("https://cryptocurrencyjobs.co/")
 //getWeb3Carrer("https://web3.career/?page=1")
-getRemote3("https://remote3.co/web3-jobs/")
+//getRemote3("https://remote3.co/web3-jobs/")

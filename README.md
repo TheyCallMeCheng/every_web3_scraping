@@ -3,13 +3,17 @@ Everything web3 will be a website that aggregates all of the web3 job listings f
 
 This repo contains only the web scraping part.
 
+If you want to contribute but the code isn't clear enough/you find it difficult to understand join the discord for this project, I'll be more then happy to help you get started 🙂
+https://discord.gg/9tpY5AqyZe
+
 Website list:
-- https://web3.career/
-- https://cryptocurrencyjobs.co/
-- https://crypto.jobs/
-- https://cryptojobslist.com/
-- https://laborx.com/
-- https://pompcryptojobs.com/
+[x] https://web3.career/
+[x] https://remote3.co/
+[ ] https://cryptocurrencyjobs.co/
+[ ] https://crypto.jobs/
+[ ] https://cryptojobslist.com/
+[ ] https://laborx.com/
+[ ] https://pompcryptojobs.com/
 
 ## Todo
 
