@@ -68,12 +68,11 @@ async function getRemote3(url){
 
     const partialDataExtraction = await page.$$eval
     ("#odindex > div.bubble-element.RepeatingGroup.bubble-rg > div.bubble-element.GroupItem.bubble-r-container.flex > div > div > div:nth-child(1) > div.bubble-element.Group.bubble-r-container.flex ", (text) => {
-        return text.map(x => //here
+        return text.map(x => 
             ({
                 Company: x.querySelector("div:nth-child(1)").textContent, 
                 Job_title: x.querySelector(".column > div a").textContent,
                 Location:  x.querySelector(".column > div:nth-child(3)").textContent,
-                //TimePosted: x.querySelector(".row > div > div > div:nth-child(2) > div.bubble-element.Text").textContent
             }))
     })
     
@@ -131,14 +130,15 @@ async function getCryptocurrencyjobs(url) {
             ) 
         }
     )
-
+    // Missing apply link
     console.log(extractedDataArray[1]);
     await fs.writeFile("cryptocurrenciesjobs.json", JSON.stringify(extractedDataArray));
 
     browser.close()
-    
 }
 
-getCryptocurrencyjobs("https://cryptocurrencyjobs.co/")
+
+
+//getCryptocurrencyjobs("https://cryptocurrencyjobs.co/")
 //getWeb3Carrer("https://web3.career/?page=1")
 //getRemote3("https://remote3.co/web3-jobs/")

@@ -7,21 +7,25 @@ If you want to contribute but the code isn't clear enough/you find it difficult 
 https://discord.gg/9tpY5AqyZe
 
 Website list:
-[x] https://web3.career/
-[x] https://remote3.co/
-[x] https://cryptocurrencyjobs.co/
-[ ] https://crypto.jobs/
-[ ] https://cryptojobslist.com/
-[ ] https://laborx.com/
-[ ] https://pompcryptojobs.com/
+- [x] https://web3.career/
+- [x] https://remote3.co/
+- [x] https://cryptocurrencyjobs.co/
+- [ ] https://crypto.jobs/
+- [ ] https://cryptojobslist.com/
+- [ ] https://laborx.com/
+
+Alternative sources:
+- [ ] Telegram: [The Daily Ape HR](https://t.me/dailyapehr)
+- [ ] Discord: [TopUpSearch](https://discord.gg/bqyrWkVywq)
 
 ## Todo
 
 - [X] Push apply link to json array
+- [ ] Get cryptocurrenciesjobs apply links and push to array
 - [ ] Change variable names, make them more easily understandable
 - [ ] In remote3 section, change the date format from "18 hours ago" to actual unix timestamp
 - [ ] Figure out a json data format for all websites
-- [ ] Research and implement cloudflare captcha block
+- [ ] Research and implement cloudflare captcha block bypass
 - [ ] Add description and instructions for possible contributors
 - [ ] Search and filter support
-- [ ] Maybe check if job listings are duplicate
+- [ ] Check if job listings are duplicate (maybe hash function?)
