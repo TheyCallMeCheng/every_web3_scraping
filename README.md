@@ -9,7 +9,7 @@ https://discord.gg/9tpY5AqyZe
 Website list:
 [x] https://web3.career/
 [x] https://remote3.co/
-[ ] https://cryptocurrencyjobs.co/
+[x] https://cryptocurrencyjobs.co/
 [ ] https://crypto.jobs/
 [ ] https://cryptojobslist.com/
 [ ] https://laborx.com/
