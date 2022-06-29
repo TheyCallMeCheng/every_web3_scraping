@@ -21,7 +21,7 @@ Alternative sources:
 ## Todo
 
 - [X] Push apply link to json array
-- [ ] Get cryptocurrenciesjobs apply links and push to array
+- [X] Get cryptocurrenciesjobs apply links and push to array
 - [ ] Change variable names, make them more easily understandable
 - [ ] In remote3 section, change the date format from "18 hours ago" to actual unix timestamp
 - [ ] Figure out a json data format for all websites

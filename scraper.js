@@ -107,7 +107,7 @@ async function getRemote3(url){
 }
 
 async function getCryptocurrencyjobs(url) {
-    const browser = await puppeteer.launch({slowMo: 100, headless: true});
+    const browser = await puppeteer.launch({slowMo: 250, headless: false});
     const page = await browser.newPage();
     await page.goto(url);
     await page.setViewport({
@@ -125,6 +125,7 @@ async function getCryptocurrencyjobs(url) {
                     Category: x.querySelector("div > h4 > a").textContent,
                     Contract_Type: x.querySelectorAll(" div > div > ul ")[1].textContent,
                     TimePosted: x.querySelector("time").dateTime,
+                    applyLink: x.querySelector("h2 a").href
                 }
                 )
             ) 
@@ -138,7 +139,6 @@ async function getCryptocurrencyjobs(url) {
 }
 
 
-
-//getCryptocurrencyjobs("https://cryptocurrencyjobs.co/")
+getCryptocurrencyjobs("https://cryptocurrencyjobs.co/")
 //getWeb3Carrer("https://web3.career/?page=1")
 //getRemote3("https://remote3.co/web3-jobs/")
