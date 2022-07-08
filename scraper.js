@@ -31,36 +31,30 @@ async function getWeb3Carrer(url){
     const applyLinks = await page.$$eval(
         // Get the last td of the row, contains the a element with the apply link
         "body > main > div > div > div > div:nth-child(3) > table > tbody > tr > td:last-child a", (el) => {
-            return el.map(x => x.href)
+            return el.map(x => ({
+                applyLink: x.href
+            }))
         }
     )
 
-    let tempArray = new Array();
+    let i = -1;
+    const completeJSON = partialDataExtraction.map(element => {
+        i++;
+        return Object.assign(JSON.parse(element), applyLinks[i])
+    }); 
 
-    partialDataExtraction.forEach(row => {
-        //Just a test to check if I can access items in the object
-        //console.log(JSON.parse(row).datePosted + " NEW LINE ------------------- \n")
-        // I have to parse Each row to make sure the json is correctly formatted
-        // Some strange errors might popup while parsing the json, we will just skip those lines
-        try{
-            //Instead of pushing to the array of objects you should use Object.assign to push directly to the object
-            applyLinks.forEach(element => {
-                tempArray.push(JSON.parse(row), element) 
-            });
-        }catch(error) {
-            console.log("Error while pushing to tempArray: " + error)
-        }
-    });
+    const standardizedJSON = completeJSON.map(element => ({
+        Job_title: element.title,
+        Company: element.hiringOrganization.name,
+        Location: element.jobLocation.addressCountry,
+        Category: element.occupationalCategory,
+        Contract_Type: element.employmentType,
+        TimePosted: element.datePosted,
+        applyLink: element.applyLink
 
-    //Delete unused data
-    tempArray.forEach(element => {
-        if(element.datePosted){
-            delete element["@context"]
-            delete element["@type"]
-        }
-    })
+    }))
     
-    await fs.writeFile("web3Carrer.json", JSON.stringify(tempArray));
+    await fs.writeFile("web3Carrer.json", JSON.stringify(standardizedJSON));
     browser.close();
 } 
 
@@ -177,6 +171,6 @@ async function getCryptocurrencyjobs(url) {
     browser.close()
 }
 
-getCryptocurrencyjobs("https://cryptocurrencyjobs.co/")
-//getWeb3Carrer("https://web3.career/?page=1")
+//getCryptocurrencyjobs("https://cryptocurrencyjobs.co/")
+getWeb3Carrer("https://web3.career/?page=1")
 //getRemote3("https://remote3.co/web3-jobs/")
