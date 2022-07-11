@@ -50,8 +50,8 @@ async function getWeb3Carrer(url){
         Category: element.occupationalCategory,
         Contract_Type: element.employmentType,
         TimePosted: element.datePosted,
-        applyLink: element.applyLink
-
+        applyLink: element.applyLink,
+        logoSrc: ""
     }))
     
     await fs.writeFile("web3Carrer.json", JSON.stringify(standardizedJSON));
@@ -81,10 +81,18 @@ async function getRemote3(url){
                 Company: x.querySelector("div:nth-child(1)").textContent, 
                 Location:  x.querySelector(".column > div:nth-child(3)").textContent,
                 Category: "",
-                Contract_Type: ""
+                Contract_Type: "",
             }))
     })
-    
+
+    const extractedLogosSrc = await page.$$eval
+    ("#odindex > div.bubble-element.RepeatingGroup.bubble-rg > div.bubble-element.GroupItem.bubble-r-container.flex.row > div > div > div:nth-child(1) > div.bubble-element.Image > img", (text) => {
+        return text.map(x => 
+            ({
+                logoSrc: x.src
+            }))
+    })
+
     // TODO: Change the "2 days ago" to actual time
     const datesPosted = await page.$$eval(
         "#odindex > div.bubble-element.RepeatingGroup.bubble-rg > div.bubble-element.GroupItem.bubble-r-container.flex.row > div > div > div:nth-child(2) > div.bubble-element.Text", (item) => {
@@ -105,7 +113,7 @@ async function getRemote3(url){
     var i = -1;
     const completeJSON = partialDataExtraction.map(item => {
         i++;
-        return Object.assign(item, datesPosted[i], jobLinks[i])
+        return Object.assign(item, datesPosted[i], jobLinks[i], extractedLogosSrc[i])
     })
 
     console.log(completeJSON[0])
@@ -140,20 +148,20 @@ async function getCryptocurrencyjobs(url) {
                     Category: x.querySelector("div > h4 > a").textContent,
                     Contract_Type: x.querySelectorAll(" div > div > ul ")[1].textContent,
                     TimePosted: x.querySelector("time").dateTime,
-                    applyLink: x.querySelector("h2 a").href
+                    applyLink: x.querySelector("h2 a").href,
+                    logoSrc: x.querySelector("img").src
                 }
                 )
             ) 
         }
     )
+
     
     function removeOlderThanFiveDays(el) {
         let month = el.TimePosted.substring(5,7);
         let day = el.TimePosted.substring(8,10);
         let year = el.TimePosted.substring(0,4)
 
-        //console.log("Year " + year + " Month: " + month + " Day: " + day);
-        
         const numberOfDaysDifference = getDifferenceInDays(year, month, day)
         
         if(numberOfDaysDifference < -5){
@@ -171,6 +179,6 @@ async function getCryptocurrencyjobs(url) {
     browser.close()
 }
 
-//getCryptocurrencyjobs("https://cryptocurrencyjobs.co/")
-getWeb3Carrer("https://web3.career/?page=1")
-//getRemote3("https://remote3.co/web3-jobs/")
+// getWeb3Carrer("https://web3.career/?page=1")
+// getRemote3("https://remote3.co/web3-jobs/")
+getCryptocurrencyjobs("https://cryptocurrencyjobs.co/")
