@@ -179,6 +179,44 @@ async function getCryptocurrencyjobs(url) {
     browser.close()
 }
 
+async function getCryptoJobs(url) {
+    const browser = await puppeteer.launch({slowMo: 250, headless: true});
+    const page = await browser.newPage();
+    await page.goto(url);
+    await page.setViewport({
+        width: 1080,
+        height: 1920,
+      });
+
+    //take a screenshot of the page for debugging purposes
+    await page.screenshot({
+        path:"./screen.png",
+        fullPage: true,
+    })
+
+    const extractedDataArray = await page.$$eval(
+        "#app > div > div > div.col-md-8.content-panel > div > div.panel-body > table > tbody > tr.job-entry ", row => {
+            return row.map(x => (
+                {
+                    Job_title: x.querySelector("td > a > p").textContent,
+                    Company:  x.querySelector("td > a > span").textContent,
+                    Location: x.querySelectorAll("td > a > div > small > span")[2].textContent,
+                    Category: x.querySelector("td > a > div > small > span").textContent,
+                    Contract_Type: x.querySelectorAll("td > a > div > small > span")[1].textContent,
+                    TimePosted: x.querySelector("td > small > div > span").textContent,
+                    applyLink: x.querySelector("td > a").href,
+                    logoSrc: x.querySelector("td > a > img").src
+                }
+            ))
+        }
+    )
+    "#app > div > div > div.col-md-8.content-panel > div > div.panel-body > table > tbody > tr > td:nth-child(2) > a > p "
+    console.log(extractedDataArray[0])
+
+    browser.close()
+}
+
 // getWeb3Carrer("https://web3.career/?page=1")
 // getRemote3("https://remote3.co/web3-jobs/")
-getCryptocurrencyjobs("https://cryptocurrencyjobs.co/")
+// getCryptocurrencyjobs("https://cryptocurrencyjobs.co/")
+getCryptoJobs("https://crypto.jobs/?page=1")
