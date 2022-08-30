@@ -29,3 +29,4 @@ Alternative sources:
 - [ ] Add description and instructions for possible contributors
 - [ ] Search and filter support
 - [ ] Check if job listings are duplicate (maybe hash function?)
+- [ ] web3carrer img src broken
