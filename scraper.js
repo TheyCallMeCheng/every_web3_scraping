@@ -13,7 +13,7 @@ function getDifferenceInDays(year, month, day) {
 }
 
 async function getWeb3Carrer(url){
-    const browser = await puppeteer.launch({headless: false, slowMo: 250});
+    const browser = await puppeteer.launch();
     const page = await browser.newPage();
     await page.goto(url);
     //take a screenshot of the page for debugging purposes
@@ -30,13 +30,13 @@ async function getWeb3Carrer(url){
 
     const applyLinks = await page.$$eval(
         // Get the last td of the row, contains the a element with the apply link
-        "body > main > div > div > div > div:nth-child(3) > table > tbody > tr", (el) => {
+        "body > main > div > div > div > div:nth-child(3) > table > tbody > tr > td:last-child a", (el) => {
             return el.map(x => ({
-                applyLink: x.querySelector("td a").href,
+                applyLink: x.href
             }))
         }
     )
-    //bad implementation but works
+
     let i = -1;
     const completeJSON = partialDataExtraction.map(element => {
         i++;
@@ -51,7 +51,7 @@ async function getWeb3Carrer(url){
         Contract_Type: element.employmentType,
         TimePosted: element.datePosted,
         applyLink: element.applyLink,
-        logoSrc: element.logoSrc
+        logoSrc: ""
     }))
     
     await fs.writeFile("web3Carrer.json", JSON.stringify(standardizedJSON));
