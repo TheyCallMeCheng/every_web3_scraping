@@ -54,7 +54,7 @@ async function getWeb3Carrer(url){
         logoSrc: ""
     }))
     
-    await fs.writeFile("web3Carrer.json", JSON.stringify(standardizedJSON));
+    // await fs.writeFile("web3Carrer.json", JSON.stringify(standardizedJSON));
     browser.close();
     return standardizedJSON;
 } 
@@ -119,7 +119,7 @@ async function getRemote3(url){
 
     console.log(completeJSON[0])
 
-    await fs.writeFile("remote3.json", JSON.stringify(completeJSON));
+    // await fs.writeFile("remote3.json", JSON.stringify(completeJSON));
     browser.close();
     
     return completeJSON;
@@ -176,7 +176,7 @@ async function getCryptocurrencyjobs(url) {
     const filteredExtractedDataArray = extractedDataArray.filter(removeOlderThanFiveDays)
 
     console.log(filteredExtractedDataArray[1]);
-    await fs.writeFile("cryptocurrenciesjobs.json", JSON.stringify(filteredExtractedDataArray));
+    //await fs.writeFile("cryptocurrenciesjobs.json", JSON.stringify(filteredExtractedDataArray));
 
     browser.close()
 
@@ -216,7 +216,7 @@ async function getCryptoJobs(url) {
     )
     "#app > div > div > div.col-md-8.content-panel > div > div.panel-body > table > tbody > tr > td:nth-child(2) > a > p "
     console.log(extractedDataArray[0])
-    await fs.writeFile("cryptojobs.json", JSON.stringify(extractedDataArray));
+    //await fs.writeFile("cryptojobs.json", JSON.stringify(extractedDataArray));
 
     browser.close()
     return extractedDataArray;
@@ -224,17 +224,17 @@ async function getCryptoJobs(url) {
 
 async function callAndGlue(){
     //gets the data, joins the array and then prints them to a single file
-    const web3Carrer = await getWeb3Carrer("https://web3.career/?page=1")
+    // const web3Carrer = await getWeb3Carrer("https://web3.career/?page=1")
     const remote3 = await getRemote3("https://remote3.co/web3-jobs/")
     const CryptoCJ = await getCryptocurrencyjobs("https://cryptocurrencyjobs.co/")
     const CJ = await getCryptoJobs("https://crypto.jobs/?page=1")
 
     let joinedCryptoJobs = []
-    Array.prototype.push.apply(joinedCryptoJobs, web3Carrer)
+    // Array.prototype.push.apply(joinedCryptoJobs, web3Carrer)
     Array.prototype.push.apply(joinedCryptoJobs, remote3)
     Array.prototype.push.apply(joinedCryptoJobs, CryptoCJ)
     Array.prototype.push.apply(joinedCryptoJobs, CJ)
-    await fs.writeFile("AllCryptoJobs.json", JSON.stringify(joinedCryptoJobs));
+    await fs.writeFile(__dirname + "/AllCryptoJobs.json", JSON.stringify(joinedCryptoJobs));
 }
 
 
